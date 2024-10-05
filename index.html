@@ -10,6 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             display: flex;
             flex-direction: column;
@@ -44,6 +48,7 @@
             max-width: 100%;
             gap: 20px;
             margin: 10px 0;
+            padding: 0 20px;
         }
 
         .possessions h2 {
@@ -99,9 +104,10 @@
 
         .key-table {
             display: grid;
-            grid-auto-columns: auto;
-            grid-auto-flow: column;
+            grid-template-columns: repeat(auto-fit, 250px);
             gap: 20px;
+            align-self: stretch;
+            justify-content: center;
         }
 
         .key-table div span {
@@ -124,6 +130,16 @@
         .place p {
             font-size: 13px;
             color: darkgray;
+        }
+        
+        @media (max-width: 1000px) {
+            .possessions {
+                grid-template-columns: 1fr;
+            }
+
+            .possessions .sun-times, .possessions .key {
+                grid-column: 1;
+            }
         }
     </style>
 </head>
