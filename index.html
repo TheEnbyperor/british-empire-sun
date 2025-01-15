@@ -383,12 +383,15 @@
                 .then(response => response.json())
                 .then(data => {
                     const today_data = data.results;
+                    console.log(today_data);
                     const first_light = (parseInt(today_data.first_light, 10) - today_start) / 864;
                     const dawn = (parseInt(today_data.dawn, 10) - today_start) / 864;
                     const sunrise = (parseInt(today_data.sunrise, 10) - today_start) / 864;
                     const sunset = (parseInt(today_data.sunset, 10) - today_start) / 864;
                     const dusk = (parseInt(today_data.dusk, 10) - today_start) / 864;
                     const last_light = (parseInt(today_data.last_light, 10) - today_start) / 864;
+
+                    console.log("first_light", first_light, today_data.first_light);
 
                     let stops = [];
                     if (first_light > 100) {
@@ -409,13 +412,27 @@
                     if (last_light > 100) {
                         stops.push(["grey", last_light % 100]);
                     }
-                    stops.push(["black", Math.min(first_light, 100)]);
-                    stops.push(["grey", Math.min(dawn, 100)]);
-                    stops.push(["orange", Math.min(sunrise, 100)]);
-                    stops.push(["lightblue", Math.min(sunset, 100)]);
-                    stops.push(["orange", Math.min(dusk, 100)]);
-                    stops.push(["grey", Math.min(last_light, 100)]);
-                    stops.push(["black", null]);
+                    if (first_light) {
+                        stops.push(["black", Math.min(first_light, 100)]);
+                    }
+                    if (dawn) {
+                        stops.push(["grey", Math.min(dawn, 100)]);
+                    }
+                    if (sunrise) {
+                        stops.push(["orange", Math.min(sunrise, 100)]);
+                    }
+                    if (sunset) {
+                        stops.push(["lightblue", Math.min(sunset, 100)]);
+                    }
+                    if (dusk) {
+                        stops.push(["orange", Math.min(dusk, 100)]);
+                    }
+                    if (last_light) {
+                        stops.push(["grey", Math.min(last_light, 100)]);
+                        stops.push(["black", null]);
+                    } else {
+                        stops.push(["grey", null]);
+                    }
 
                     let grad = "linear-gradient(to right";
                     for (let i = 0; i < stops.length; i++) {
@@ -430,16 +447,6 @@
                     grad += ")";
                     elm.style.backgroundImage = grad;
                     console.log(grad);
-                    // elm.style.backgroundImage = `linear-gradient(
-                    //     to right,
-                    //     black ${first_light}%,
-                    //     grey ${first_light}% ${dawn}%,
-                    //     orange ${dawn}% ${sunrise}%,
-                    //     lightblue ${sunrise}% ${sunset}%,
-                    //     orange ${sunset}% ${dusk}%,
-                    //     grey ${dusk}% ${last_light}%,
-                    //     black ${last_light}%
-                    // )`;
                 })
                 .catch(error => console.error('Error:', error))
 
